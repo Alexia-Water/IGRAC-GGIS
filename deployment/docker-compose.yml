@@ -61,13 +61,13 @@ services:
       - rabbitmq:/var/lib/rabbitmq
     restart: on-failure
 
-  # postfix with smtp authentication (sasldb) TLS and OpenDKIM support are optional
-  smtp:
-    image: catatnight/postfix
-    environment:
-      maildomain: kartoza.com
-      smtp_user: noreply:docker
-    restart: unless-stopped
+#  # postfix with smtp authentication (sasldb) TLS and OpenDKIM support are optional
+#  smtp:
+#    image: catatnight/postfix
+#    environment:
+#      maildomain: kartoza.com
+#      smtp_user: noreply:docker
+#    restart: unless-stopped
 
   # Our custom django application. It includes Geonode.
   django:
@@ -135,14 +135,14 @@ services:
     command: 'celery -A geonode.celery_app:app worker -B -E --statedb=worker.state -s celerybeat-schedule --loglevel=DEBUG --concurrency=10 -n worker1@%h'
   # Celery beat that triggers scheduled tasks
 
-  celerybeat:
-    <<: *default-common-django
-    command: 'celery beat --app=geonode.celery_app:app --pidfile="/celerybeat.pid" -l debug'
-
-  # Celery camera that monitors celery tasks and populate the djcelery django admin interface
-  celerycam:
-    <<: *default-common-django
-    command: 'celery events --app=geonode.celery_app:app --pidfile="/celeryev.pid" --camera=django_celery_monitor.camera.Camera --frequency=2.0 -l debug'
+#  celerybeat:
+#    <<: *default-common-django
+#    command: 'celery beat --app=geonode.celery_app:app --pidfile="/celerybeat.pid" -l debug'
+#
+#  # Celery camera that monitors celery tasks and populate the djcelery django admin interface
+#  celerycam:
+#    <<: *default-common-django
+#    command: 'celery events --app=geonode.celery_app:app --pidfile="/celeryev.pid" --camera=django_celery_monitor.camera.Camera --frequency=2.0 -l debug'
 
   #  # Gets and installs letsencrypt certificates
   #  letsencrypt:
